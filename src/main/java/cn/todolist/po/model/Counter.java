@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +18,7 @@ public class Counter implements Serializable {
 
   private Integer count;
 
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
-  private Date updatedAt;
+  private LocalDateTime updatedAt;
 }
