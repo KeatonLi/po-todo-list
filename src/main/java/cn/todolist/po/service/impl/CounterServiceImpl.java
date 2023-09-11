@@ -1,22 +1,18 @@
-package com.tencent.wxcloudrun.service.impl;
+package cn.todolist.po.service.impl;
 
-import com.tencent.wxcloudrun.dao.CountersMapper;
-import com.tencent.wxcloudrun.model.Counter;
-import com.tencent.wxcloudrun.service.CounterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.todolist.po.model.Counter;
+import cn.todolist.po.service.CounterService;
+import cn.todolist.po.mapper.CountersMapper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Optional;
-import java.util.List;
 
 @Service
 public class CounterServiceImpl implements CounterService {
 
-  final CountersMapper countersMapper;
-
-  public CounterServiceImpl(@Autowired CountersMapper countersMapper) {
-    this.countersMapper = countersMapper;
-  }
+  @Resource
+  CountersMapper countersMapper;
 
   @Override
   public Optional<Counter> getCounter(Integer id) {

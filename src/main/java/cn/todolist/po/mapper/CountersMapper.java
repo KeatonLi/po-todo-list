@@ -1,9 +1,8 @@
-package com.tencent.wxcloudrun.dao;
+package cn.todolist.po.mapper;
 
-import com.tencent.wxcloudrun.model.Counter;
+import cn.todolist.po.model.Counter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import java.util.List;
 
 @Mapper
 public interface CountersMapper {

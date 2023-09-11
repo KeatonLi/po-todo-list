@@ -8,11 +8,11 @@
         <version>2.5.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.tencent</groupId>
-    <artifactId>springboot-wxcloudrun</artifactId>
+    <groupId>com.todolist</groupId>
+    <artifactId>po-todo-list</artifactId>
     <version>1.0</version>
-    <name>springboot-wxcloudrun</name>
-    <description>Demo project for Spring Boot</description>
+    <name>po-todo-list</name>
+    <description>po open-resource todo list</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>

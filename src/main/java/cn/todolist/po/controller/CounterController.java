@@ -1,36 +1,27 @@
-package com.tencent.wxcloudrun.controller;
+package cn.todolist.po.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.tencent.wxcloudrun.config.ApiResponse;
-import com.tencent.wxcloudrun.dto.CounterRequest;
-import com.tencent.wxcloudrun.model.Counter;
-import com.tencent.wxcloudrun.service.CounterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.todolist.po.common.ApiResponse;
+import cn.todolist.po.model.Counter;
+import cn.todolist.po.service.CounterService;
+import lombok.extern.slf4j.Slf4j;
+import cn.todolist.po.dto.CounterRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import javax.annotation.Resource;
 import java.util.Optional;
-import java.util.List;
 
 /**
  * counter控制器
  */
 @RestController
-
+@Slf4j
 public class CounterController {
 
-  final CounterService counterService;
-  final Logger logger;
-
-  public CounterController(@Autowired CounterService counterService) {
-    this.counterService = counterService;
-    this.logger = LoggerFactory.getLogger(CounterController.class);
-  }
-
+  @Resource
+  CounterService counterService;
 
   /**
    * 获取当前计数
@@ -38,7 +29,7 @@ public class CounterController {
    */
   @GetMapping(value = "/api/count")
   ApiResponse get() {
-    logger.info("/api/count get request");
+    log.info("/api/count get request");
     Optional<Counter> counter = counterService.getCounter(1);
     Integer count = 0;
     if (counter.isPresent()) {
@@ -56,7 +47,7 @@ public class CounterController {
    */
   @PostMapping(value = "/api/count")
   ApiResponse create(@RequestBody CounterRequest request) {
-    logger.info("/api/count post request, action: {}", request.getAction());
+    log.info("/api/count post request, action: {}", request.getAction());
 
     Optional<Counter> curCounter = counterService.getCounter(1);
     if (request.getAction().equals("inc")) {
