@@ -1,10 +1,12 @@
-package com.tencent.wxcloudrun.config;
+package cn.todolist.po.common;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.HashMap;
 
 @Data
+@Accessors(chain = true)
 public final class ApiResponse {
 
   private Integer code;
