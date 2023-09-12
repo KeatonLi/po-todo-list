@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class Counter implements Serializable {
 
-  private Integer id;
+    private Integer id;
 
-  private Integer count;
+    private Integer count;
 
-  private LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-  private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 }

@@ -11,21 +11,21 @@ import java.util.Optional;
 @Service
 public class CounterServiceImpl implements CounterService {
 
-  @Resource
-  CountersMapper countersMapper;
+    @Resource
+    CountersMapper countersMapper;
 
-  @Override
-  public Optional<Counter> getCounter(Integer id) {
-    return Optional.ofNullable(countersMapper.getCounter(id));
-  }
+    @Override
+    public Optional<Counter> getCounter(Integer id) {
+        return Optional.ofNullable(countersMapper.getCounter(id));
+    }
 
-  @Override
-  public void upsertCount(Counter counter) {
-    countersMapper.upsertCount(counter);
-  }
+    @Override
+    public void upsertCount(Counter counter) {
+        countersMapper.upsertCount(counter);
+    }
 
-  @Override
-  public void clearCount(Integer id) {
-    countersMapper.clearCount(id);
-  }
+    @Override
+    public void clearCount(Integer id) {
+        countersMapper.clearCount(id);
+    }
 }
