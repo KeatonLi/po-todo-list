@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-@TableName(value = "todo_task", autoResultMap = true)
+@TableName(value = "todo_task")
 public class Task {
     @TableId
     Long id;

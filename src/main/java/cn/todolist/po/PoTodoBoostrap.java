@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages = {"com.todolist.po.mapper"})
+@MapperScan(value = "cn.todolist.po.mapper")
 public class PoTodoBoostrap {
 
     public static void main(String[] args) {

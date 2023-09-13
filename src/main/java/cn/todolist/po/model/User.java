@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-@TableName(value = "todo_user", autoResultMap = true)
+@TableName(value = "todo_user")
 public class User {
     Long id;
 

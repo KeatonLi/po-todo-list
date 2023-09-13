@@ -3,6 +3,7 @@
 <mapper namespace="cn.todolist.po.mapper.TaskMapper">
 
 
-
-
+    <select id="getTaskList" resultType="cn.todolist.po.model.Task">
+        select * from todo_task where user_id = #{user_id}
+    </select>
 </mapper>
