@@ -11,31 +11,18 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements TaskService{
+public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements TaskService {
     @Resource
     TaskMapper taskMapper;
 
     @Resource
     SnowFlakeUtil flakeUtil;
 
-    @Override
-    public void insert(Task task) {
-        task.setId(flakeUtil.getNextId());
-        taskMapper.insert(task);
-    }
 
     @Override
-    public void update(Task task) {
-        taskMapper.updateById(task);
-    }
-
-    @Override
-    public List<Task> getTaskList(Long userId) {
-        return taskMapper.getTaskList(userId);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        taskMapper.deleteById(id);
+    public List<Task> getTaskList(Long userId, Integer status) {
+        return this.lambdaQuery().eq(Task::getUserId, userId)
+                .eq(Task::getStatus, status)
+                .list();
     }
 }

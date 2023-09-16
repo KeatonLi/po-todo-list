@@ -27,8 +27,11 @@ public class Task {
     @TableField(value = "title")
     String title;
 
-    @TableField(value = "describe")
+    @TableField(value = "`describe`")
     String describe;
+
+    @TableField(value = "status")
+    Integer status;
 
     @TableField(value = "create_at", fill = FieldFill.INSERT_UPDATE)
     LocalDateTime createAt;

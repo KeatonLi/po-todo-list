@@ -14,15 +14,17 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/task")
 @Slf4j
+
 public class TaskController {
 
     @Resource
     TaskService taskService;
 
+
     @GetMapping("/{user_id}")
-    public ApiResponse getTaskList(@PathVariable("user_id") Long userId) {
+    public ApiResponse getTaskList(@PathVariable("user_id") Long userId, @RequestParam("status") Integer status) {
         try {
-            return ApiResponse.ok(taskService.getTaskList(userId));
+            return ApiResponse.ok(taskService.getTaskList(userId, status));
         } catch (Exception e) {
             throw new CommonException(RespStatusEnum.ERROR_500);
         }
@@ -31,7 +33,27 @@ public class TaskController {
     @PutMapping()
     public ApiResponse insertTask(@RequestBody Task task) {
         try {
-            taskService.insert(task);
+            taskService.save(task);
+            return ApiResponse.ok();
+        } catch (Exception e) {
+            throw new CommonException(RespStatusEnum.ERROR_500);
+        }
+    }
+
+    @DeleteMapping("/{task_id}")
+    public  ApiResponse deleteTask(@PathVariable("task_id") Long taskId) {
+        try {
+            taskService.removeById(taskId);
+            return ApiResponse.ok();
+        } catch (Exception e) {
+            throw new CommonException(RespStatusEnum.ERROR_500);
+        }
+    }
+
+    @PostMapping()
+    public ApiResponse updateTask(@RequestBody Task task) {
+        try {
+            taskService.updateById(task);
             return ApiResponse.ok();
         } catch (Exception e) {
             throw new CommonException(RespStatusEnum.ERROR_500);
