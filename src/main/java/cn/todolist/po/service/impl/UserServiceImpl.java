@@ -8,7 +8,6 @@ import cn.todolist.po.service.UserService;
 import cn.todolist.po.utils.MD5Utils;
 import cn.todolist.po.utils.SnowFlakeUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,9 +32,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名或者密码输入为空");
         }
-        LambdaQueryChainWrapper<User> wrapper = new LambdaQueryChainWrapper<>(userMapper);
-        wrapper.eq(User::getUsername, username).eq(User::getPassword, MD5Utils.string2MD5(password));
-        User user = userMapper.selectOne(wrapper);
+        User user = this.lambdaQuery().eq(User::getUsername, username)
+                .eq(User::getPassword, MD5Utils.string2MD5(password))
+                .one();
         if (Objects.nonNull(user)) {
             return true;
         } else {
@@ -45,9 +44,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public void userRegister(User user) {
-        LambdaQueryChainWrapper<User> wrapper = new LambdaQueryChainWrapper<>(userMapper);
-        wrapper.eq(User::getUsername, user.getUsername());
-        Long count = userMapper.selectCount(wrapper);
+        Long count = this.lambdaQuery().eq(User::getUsername, user.getUsername()).count();
         if (count > 0) {
             throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名已存在");
         } else {
