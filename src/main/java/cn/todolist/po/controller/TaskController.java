@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/task")
 @Slf4j
-
 public class TaskController {
 
     @Resource

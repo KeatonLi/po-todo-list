@@ -16,6 +16,10 @@ import java.time.LocalDateTime;
 public class User {
     Long id;
 
+    String username;
+
+    String password;
+
     String wechatId;
 
     LocalDateTime createAt;
