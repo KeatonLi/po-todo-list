@@ -46,11 +46,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void userRegister(User user) {
         LambdaQueryChainWrapper<User> wrapper = new LambdaQueryChainWrapper<>(userMapper);
-        Long count = wrapper.eq(User::getUsername, user).count();
+        wrapper.eq(User::getUsername, user.getUsername());
+        Long count = userMapper.selectCount(wrapper);
         if (count > 0) {
             throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名已存在");
         } else {
             user.setId(snowFlakeUtil.getNextId());
+            user.setPassword(MD5Utils.string2MD5(user.getPassword()));
             this.save(user);
         }
     }
