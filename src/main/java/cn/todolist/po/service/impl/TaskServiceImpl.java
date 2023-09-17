@@ -5,12 +5,14 @@ import cn.todolist.po.model.Task;
 import cn.todolist.po.service.TaskService;
 import cn.todolist.po.utils.SnowFlakeUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements TaskService {
     @Resource
     TaskMapper taskMapper;

@@ -3,12 +3,14 @@ package cn.todolist.po.service.impl;
 import cn.todolist.po.model.Counter;
 import cn.todolist.po.service.CounterService;
 import cn.todolist.po.mapper.CountersMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CounterServiceImpl implements CounterService {
 
     @Resource

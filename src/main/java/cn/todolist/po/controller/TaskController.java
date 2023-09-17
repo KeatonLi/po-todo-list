@@ -2,8 +2,6 @@ package cn.todolist.po.controller;
 
 
 import cn.todolist.po.common.ApiResponse;
-import cn.todolist.po.enums.RespStatusEnum;
-import cn.todolist.po.exception.CommonException;
 import cn.todolist.po.model.Task;
 import cn.todolist.po.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +23,8 @@ public class TaskController {
         try {
             return ApiResponse.ok(taskService.getTaskList(userId, status));
         } catch (Exception e) {
-            throw new CommonException(RespStatusEnum.ERROR_500);
+            log.error(e.getMessage());
+            return ApiResponse.error(e.getMessage());
         }
     }
 
@@ -35,7 +34,8 @@ public class TaskController {
             taskService.save(task);
             return ApiResponse.ok();
         } catch (Exception e) {
-            throw new CommonException(RespStatusEnum.ERROR_500);
+            log.error(e.getMessage());
+            return ApiResponse.error(e.getMessage());
         }
     }
 
@@ -45,7 +45,8 @@ public class TaskController {
             taskService.removeById(taskId);
             return ApiResponse.ok();
         } catch (Exception e) {
-            throw new CommonException(RespStatusEnum.ERROR_500);
+            log.error(e.getMessage());
+            return ApiResponse.error(e.getMessage());
         }
     }
 
@@ -55,7 +56,8 @@ public class TaskController {
             taskService.updateById(task);
             return ApiResponse.ok();
         } catch (Exception e) {
-            throw new CommonException(RespStatusEnum.ERROR_500);
+            log.error(e.getMessage());
+            return ApiResponse.error(e.getMessage());
         }
     }
 }

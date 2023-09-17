@@ -2,8 +2,6 @@ package cn.todolist.po.controller;
 
 
 import cn.todolist.po.common.ApiResponse;
-import cn.todolist.po.enums.RespStatusEnum;
-import cn.todolist.po.exception.CommonException;
 import cn.todolist.po.model.User;
 import cn.todolist.po.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +26,8 @@ public class UserController {
                 return ApiResponse.error();
             }
         } catch (Exception e) {
-            throw new CommonException(RespStatusEnum.ERROR_500);
+            log.error(e.getMessage());
+            return ApiResponse.error(e.getMessage());
         }
     }
 
@@ -38,7 +37,8 @@ public class UserController {
             userService.userRegister(user);
             return ApiResponse.ok();
         } catch (Exception e) {
-            throw new CommonException(RespStatusEnum.ERROR_500);
+            log.error(e.getMessage());
+            return ApiResponse.error(e.getMessage());
         }
     }
 }
