@@ -20,11 +20,7 @@ public class UserController {
     @PostMapping("/login")
     public ApiResponse login(@RequestBody User user) {
         try {
-            if (userService.userLogin(user.getUsername(), user.getPassword())) {
-                return ApiResponse.ok();
-            } else {
-                return ApiResponse.error();
-            }
+            return ApiResponse.ok(userService.userLogin(user.getUsername(), user.getPassword()));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResponse.error(e.getMessage());

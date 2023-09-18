@@ -4,6 +4,7 @@ import cn.todolist.po.enums.RespStatusEnum;
 import cn.todolist.po.exception.CommonException;
 import cn.todolist.po.mapper.UserMapper;
 import cn.todolist.po.model.User;
+import cn.todolist.po.model.vo.LoginVO;
 import cn.todolist.po.service.UserService;
 import cn.todolist.po.utils.MD5Utils;
 import cn.todolist.po.utils.SnowFlakeUtil;
@@ -13,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Objects;
 
 
 @Service
@@ -28,18 +28,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public Boolean userLogin(String username, String password) {
+    public LoginVO userLogin(String username, String password) {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名或者密码输入为空");
         }
         User user = this.lambdaQuery().eq(User::getUsername, username)
                 .eq(User::getPassword, MD5Utils.string2MD5(password))
                 .one();
-        if (Objects.nonNull(user)) {
-            return true;
-        } else {
-            throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名或密码错误");
+        if (user == null) {
+            throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名或者密码错误");
         }
+        return LoginVO.builder()
+                .userId(user.getId())
+                .token("e10adc3949ba59")
+                .build();
     }
 
     @Override
