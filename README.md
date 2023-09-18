@@ -1,3 +1,12 @@
+这是一个清单小程序的后端程序，目前的技术栈为SpringBoot MySQL
+
+作者是一名互联网小厂的2023届应届生，想做出一款出自内心的清单小程序
+
+
+
+--- 
+下面是微信云托管自带的介绍
+---
 # wxcloudrun-springboot
 [![GitHub license](https://img.shields.io/github/license/WeixinCloud/wxcloudrun-express)](https://github.com/WeixinCloud/wxcloudrun-express)
 ![GitHub package.json dependency version (prod)](https://img.shields.io/badge/maven-3.6.0-green)
