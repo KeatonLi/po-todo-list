@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TaskService extends IService<Task> {
 
-    List<Task> getTaskList(Long userId, Integer status);
+    List<Task> getTaskList(Long userId);
 
 }
