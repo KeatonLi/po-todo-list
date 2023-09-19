@@ -27,6 +27,11 @@ public enum RespStatusEnum {
     SUCCESS("200", "操作成功"),
     FAIL("-1", "操作失败"),
 
+    /**
+     * 登陆校验
+     */
+    WRONG_PASSWORD("500", "用户名或者密码错误"),
+    EMPTY_INPUT("500", "用户名或者密码输入为空"),
     ;
 
     /**

@@ -30,13 +30,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public LoginVO userLogin(String username, String password) {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
-            throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名或者密码输入为空");
+            throw new CommonException(RespStatusEnum.EMPTY_INPUT);
         }
         User user = this.lambdaQuery().eq(User::getUsername, username)
                 .eq(User::getPassword, MD5Utils.string2MD5(password))
                 .one();
         if (user == null) {
-            throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名或者密码错误");
+            throw new CommonException(RespStatusEnum.WRONG_PASSWORD);
         }
         return LoginVO.builder()
                 .userId(user.getId())
