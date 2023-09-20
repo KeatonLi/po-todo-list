@@ -23,7 +23,15 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
     @Override
     public List<Task> getTaskList(Long userId) {
-        return this.lambdaQuery().eq(Task::getUserId, userId)
+        return super.lambdaQuery().eq(Task::getUserId, userId)
                 .list();
     }
+
+    @Override
+    public boolean save(Task task) {
+        super.save(task.setStatus(0));
+        return true;
+    }
+
+
 }

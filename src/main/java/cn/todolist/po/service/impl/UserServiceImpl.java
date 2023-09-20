@@ -32,7 +32,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名或者密码输入为空");
         }
-        User user = this.lambdaQuery().eq(User::getUsername, username)
+        User user = super.lambdaQuery().eq(User::getUsername, username)
                 .eq(User::getPassword, MD5Utils.string2MD5(password))
                 .one();
         if (user == null) {
@@ -46,7 +46,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public void userRegister(User user) {
-        Long count = this.lambdaQuery().eq(User::getUsername, user.getUsername()).count();
+        Long count = super.lambdaQuery().eq(User::getUsername, user.getUsername()).count();
         if (count > 0) {
             throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名已存在");
         } else {
