@@ -23,8 +23,11 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
     @Override
     public List<Task> getTaskList(Long userId) {
-        return super.lambdaQuery().eq(Task::getUserId, userId)
+        List<Task> list = super.lambdaQuery().eq(Task::getUserId, userId)
                 .list();
+        // 把star任务的排前面
+        list.sort((o1, o2) -> o2.getStar() - o1.getStar());
+        return list;
     }
 
     @Override

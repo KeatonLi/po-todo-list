@@ -30,6 +30,9 @@ public class Task {
     @TableField(value = "`describe`")
     String describe;
 
+    @TableField(value = "star")
+    Integer star;
+
     @TableField(value = "status")
     Integer status;
 
