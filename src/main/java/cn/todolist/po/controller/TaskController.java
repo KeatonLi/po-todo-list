@@ -19,9 +19,9 @@ public class TaskController {
 
 
     @GetMapping("/{user_id}")
-    public ApiResponse getTaskList(@PathVariable("user_id") Long userId, @RequestParam("status") Integer status) {
+    public ApiResponse getTaskList(@PathVariable("user_id") Long userId) {
         try {
-            return ApiResponse.ok(taskService.getTaskList(userId, status));
+            return ApiResponse.ok(taskService.getTaskList(userId));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResponse.error(e.getMessage());
