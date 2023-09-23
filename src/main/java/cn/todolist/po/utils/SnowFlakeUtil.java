@@ -9,9 +9,9 @@ public class SnowFlakeUtil {
     private final static long START_STAMP = 1480166465631L;
 
     // 每部分的位数
-    private final static long SEQUENCE_BIT = 12; // 序列号占用位数
-    private final static long MACHINE_BIT = 5; // 机器id占用位数
-    private final static long DATACENTER_BIT = 5; // 机房id占用位数
+    private final static long SEQUENCE_BIT = 3; // 序列号占用位数
+    private final static long MACHINE_BIT = 1; // 机器id占用位数
+    private final static long DATACENTER_BIT = 1; // 机房id占用位数
 
     // 每部分最大值
     private final static long MAX_SEQUENCE = ~(-1L << SEQUENCE_BIT);
@@ -63,5 +63,13 @@ public class SnowFlakeUtil {
     // 获取当前的毫秒数
     private long getNewStamp() {
         return System.currentTimeMillis();
+    }
+
+    public static void main(String[] args) {
+        SnowFlakeUtil s = new SnowFlakeUtil();
+        Long x = System.currentTimeMillis();
+        System.out.println(System.currentTimeMillis());
+        System.out.println(x);
+        System.out.println(s.getNextId());
     }
 }

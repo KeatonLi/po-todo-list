@@ -32,6 +32,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
     @Override
     public boolean save(Task task) {
+        task.setId(flakeUtil.getNextId());
         super.save(task.setStatus(0));
         return true;
     }

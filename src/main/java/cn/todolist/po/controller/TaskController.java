@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/task")
@@ -18,9 +19,11 @@ public class TaskController {
     TaskService taskService;
 
 
-    @GetMapping("/{user_id}")
-    public ApiResponse getTaskList(@PathVariable("user_id") Long userId) {
+    @GetMapping("/")
+    public ApiResponse getTaskList(HttpServletRequest request) {
         try {
+            String token = request.getHeader("token");
+            Long userId = Long.parseLong(request.getHeader("userId"));
             return ApiResponse.ok(taskService.getTaskList(userId));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -28,9 +31,22 @@ public class TaskController {
         }
     }
 
-    @PutMapping()
-    public ApiResponse insertTask(@RequestBody Task task) {
+    @GetMapping("/{taskId}")
+    public ApiResponse getTaskDetail(@PathVariable("taskId") Long taskId) {
         try {
+            return ApiResponse.ok(taskService.getById(taskId));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ApiResponse.error(e.getMessage());
+        }
+    }
+
+
+
+    @PutMapping()
+    public ApiResponse insertTask(@RequestBody Task task, HttpServletRequest request) {
+        try {
+            task.setUserId(Long.parseLong(request.getHeader("userId")));
             taskService.save(task);
             return ApiResponse.ok();
         } catch (Exception e) {
