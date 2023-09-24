@@ -4,6 +4,7 @@ package cn.todolist.po.controller;
 import cn.todolist.po.common.ApiResponse;
 import cn.todolist.po.model.Task;
 import cn.todolist.po.service.TaskService;
+import cn.todolist.po.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,7 @@ public class TaskController {
     @GetMapping("/")
     public ApiResponse getTaskList(HttpServletRequest request) {
         try {
-            String token = request.getHeader("token");
-            Long userId = Long.parseLong(request.getHeader("userId"));
-            return ApiResponse.ok(taskService.getTaskList(userId));
+            return ApiResponse.ok(taskService.getTaskList((Long) request.getAttribute("id")));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResponse.error(e.getMessage());
