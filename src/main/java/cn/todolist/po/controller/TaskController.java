@@ -16,9 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class TaskController {
 
-    @Resource
-    TaskService taskService;
+    private final TaskService taskService;
 
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @GetMapping("/")
     public ApiResponse getTaskList(HttpServletRequest request) {

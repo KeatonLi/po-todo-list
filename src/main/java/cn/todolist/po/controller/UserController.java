@@ -14,8 +14,11 @@ import javax.annotation.Resource;
 @Slf4j
 public class UserController {
 
-    @Resource
-    UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     public ApiResponse login(@RequestBody User user) {
