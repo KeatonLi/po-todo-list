@@ -20,8 +20,11 @@ import java.util.Optional;
 @Slf4j
 public class CounterController {
 
-    @Resource
-    CounterService counterService;
+    private final CounterService counterService;
+
+    public CounterController(CounterService counterService) {
+        this.counterService = counterService;
+    }
 
     /**
      * 获取当前计数

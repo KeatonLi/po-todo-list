@@ -9,4 +9,6 @@ public interface TaskService extends IService<Task> {
 
     List<Task> getTaskList(Long userId);
 
+    boolean save(Task task);
+
 }

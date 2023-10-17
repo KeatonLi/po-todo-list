@@ -6,6 +6,7 @@ import cn.todolist.po.mapper.UserMapper;
 import cn.todolist.po.model.User;
 import cn.todolist.po.model.vo.LoginVO;
 import cn.todolist.po.service.UserService;
+import cn.todolist.po.utils.JwtUtil;
 import cn.todolist.po.utils.MD5Utils;
 import cn.todolist.po.utils.SnowFlakeUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -32,7 +33,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             throw new CommonException(RespStatusEnum.EMPTY_INPUT);
         }
-        User user = this.lambdaQuery().eq(User::getUsername, username)
+        User user = super.lambdaQuery().eq(User::getUsername, username)
                 .eq(User::getPassword, MD5Utils.string2MD5(password))
                 .one();
         if (user == null) {
@@ -40,13 +41,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return LoginVO.builder()
                 .userId(user.getId())
-                .token("e10adc3949ba59")
+                .token(JwtUtil.createToken(user))
                 .build();
     }
 
     @Override
     public void userRegister(User user) {
-        Long count = this.lambdaQuery().eq(User::getUsername, user.getUsername()).count();
+        Long count = super.lambdaQuery().eq(User::getUsername, user.getUsername()).count();
         if (count > 0) {
             throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名已存在");
         } else {
