@@ -1,3 +1,4 @@
+
 package cn.todolist.po.service.impl;
 
 import cn.todolist.po.enums.RespStatusEnum;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 
+/**
+ * 用户服务实现类
+ */
 @Service
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -28,6 +32,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     SnowFlakeUtil snowFlakeUtil;
 
 
+    /**
+     * 用户登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 登录信息
+     * @throws CommonException 共通异常
+     */
     @Override
     public LoginVO userLogin(String username, String password) {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
@@ -45,6 +57,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .build();
     }
 
+    /**
+     * 用户注册
+     *
+     * @param user 用户信息
+     */
     @Override
     public void userRegister(User user) {
         Long count = super.lambdaQuery().eq(User::getUsername, user.getUsername()).count();
