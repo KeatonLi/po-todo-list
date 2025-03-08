@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 @Slf4j
 public class UserController {
 

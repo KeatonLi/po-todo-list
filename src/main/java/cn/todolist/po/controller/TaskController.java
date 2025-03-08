@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/task")
+@CrossOrigin
 @Slf4j
 public class TaskController {
 
@@ -37,7 +38,7 @@ public class TaskController {
     @GetMapping("/")
     public ApiResponse getTaskList(HttpServletRequest request) {
         try {
-            return ApiResponse.ok(taskService.getTaskList((Long) request.getAttribute("id")));
+            return ApiResponse.ok(taskService.getTaskList((Long) request.getAttribute("userId")));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResponse.error(e.getMessage());
@@ -68,7 +69,7 @@ public class TaskController {
     @PutMapping()
     public ApiResponse insertTask(@RequestBody Task task, HttpServletRequest request) {
         try {
-            task.setUserId(Long.parseLong(request.getHeader("userId")));
+            task.setUserId((Long) request.getAttribute("userId"));
             taskService.save(task);
             return ApiResponse.ok();
         } catch (Exception e) {

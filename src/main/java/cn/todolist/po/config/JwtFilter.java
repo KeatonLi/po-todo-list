@@ -53,7 +53,7 @@ public class JwtFilter implements Filter {
             Long id = userData.get("id").asLong();
             String userName = userData.get("userName").asString();
             //拦截器 拿到用户信息，放到request中
-            request.setAttribute("id", id);
+            request.setAttribute("userId", id);
             request.setAttribute("userName", userName);
             chain.doFilter(req, res);
         }

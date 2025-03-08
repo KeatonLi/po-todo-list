@@ -7,6 +7,7 @@ CREATE TABLE `todo_task` (
   `user_id` bigint(20) NOT NULL,
   `title` varchar(100) NOT NULL,
   `describe` text,
+  `star` tinyint(4) NOT NULL COMMENT '0：未标星，1：标星' default 0,
   `status` tinyint(4) NOT NULL COMMENT '0：未完成，1：完成',
   `create_at` timestamp NULL DEFAULT NULL,
   `update_at` timestamp NULL DEFAULT NULL,
