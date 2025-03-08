@@ -1,13 +1,13 @@
 server:
-  port: 80
+  port: 8081
 
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:po-todo-list}
-    username: ${MYSQL_USERNAME}
-    password: ${MySQL_PASSWORD}
+    url: jdbc:mysql://${MYSQL_ADDRESS:127.0.0.1:3306}/${MYSQL_DATABASE:POTODO}
+    username: ${MYSQL_USERNAME:root}
+    password: ${MySQL_PASSWORD:123456}
     type: com.alibaba.druid.pool.DruidDataSource
     initialSize: 5
     minIdle: 5

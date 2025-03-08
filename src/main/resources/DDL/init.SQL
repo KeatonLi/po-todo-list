@@ -1,3 +1,7 @@
+CREATE DATABASE POTODO;
+
+USE POTODO;
+
 CREATE TABLE `todo_task` (
   `id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
