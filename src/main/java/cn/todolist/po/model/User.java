@@ -26,9 +26,9 @@ public class User {
     @TableField(value = "wechat_id")
     String wechatId;
 
-    @TableField(value = "create_at")
+    @TableField(value = "create_at", typeHandler = cn.todolist.po.config.LocalDateTimeTypeHandler.class)
     LocalDateTime createAt;
 
-    @TableField(value = "update_at")
+    @TableField(value = "update_at", typeHandler = cn.todolist.po.config.LocalDateTimeTypeHandler.class)
     LocalDateTime updateAt;
 }

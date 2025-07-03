@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -36,9 +37,4 @@ public class Task {
     @TableField(value = "status")
     Integer status;
 
-    @TableField(value = "create_at", fill = FieldFill.INSERT_UPDATE)
-    LocalDateTime createAt;
-
-    @TableField(value = "update_at", fill = FieldFill.INSERT_UPDATE)
-    LocalDateTime updateAt;
 }
