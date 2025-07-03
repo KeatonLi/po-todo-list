@@ -4,18 +4,18 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS:127.0.0.1:3306}/${MYSQL_DATABASE:POTODO}
-    username: ${MYSQL_USERNAME:root}
-    password: ${MySQL_PASSWORD:123456}
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:./data/potodo.db
+    username: 
+    password: 
     type: com.alibaba.druid.pool.DruidDataSource
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
+    initialSize: 1
+    minIdle: 1
+    maxActive: 5
     maxWait: 60000
     timeBetweenEvictionRunsMillis: 60000
     minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
+    validationQuery: SELECT 1
     testWhileIdle: true
     testOnBorrow: false
     testOnReturn: false
@@ -27,3 +27,6 @@ spring:
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
+  type-handlers-package: cn.todolist.po.config
+  configuration:
+    map-underscore-to-camel-case: true

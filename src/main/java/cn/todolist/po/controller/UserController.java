@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @CrossOrigin
 @Slf4j
 public class UserController {
@@ -31,7 +31,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/register")
+    @PostMapping("/register")
     public ApiResponse register(@RequestBody User user) {
         try {
             userService.userRegister(user);

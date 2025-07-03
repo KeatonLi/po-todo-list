@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * 任务控制器
  */
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api/task")
 @CrossOrigin
 @Slf4j
 public class TaskController {
@@ -32,13 +32,13 @@ public class TaskController {
 
     /**
      * 获取任务列表
-     * @param request HTTP请求
+     * @param userId 用户ID
      * @return 任务列表的API响应
      */
-    @GetMapping("/")
-    public ApiResponse getTaskList(HttpServletRequest request) {
+    @GetMapping("/list")
+    public ApiResponse getTaskList(@RequestParam("userId") Long userId) {
         try {
-            return ApiResponse.ok(taskService.getTaskList((Long) request.getAttribute("userId")));
+            return ApiResponse.ok(taskService.getTaskList(userId));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResponse.error(e.getMessage());
@@ -63,13 +63,11 @@ public class TaskController {
     /**
      * 插入任务
      * @param task 任务对象
-     * @param request HTTP请求
      * @return 插入任务的API响应
      */
-    @PutMapping()
-    public ApiResponse insertTask(@RequestBody Task task, HttpServletRequest request) {
+    @PostMapping("/add")
+    public ApiResponse insertTask(@RequestBody Task task) {
         try {
-            task.setUserId((Long) request.getAttribute("userId"));
             taskService.save(task);
             return ApiResponse.ok();
         } catch (Exception e) {
@@ -80,13 +78,13 @@ public class TaskController {
 
     /**
      * 删除任务
-     * @param taskId 任务ID
+     * @param task 包含任务ID的对象
      * @return 删除任务的API响应
      */
-    @DeleteMapping("/{task_id}")
-    public ApiResponse deleteTask(@PathVariable("task_id") Long taskId) {
+    @PostMapping("/delete")
+    public ApiResponse deleteTask(@RequestBody Task task) {
         try {
-            taskService.removeById(taskId);
+            taskService.removeById(task.getId());
             return ApiResponse.ok();
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -99,7 +97,7 @@ public class TaskController {
      * @param task 任务对象
      * @return 更新任务的API响应
      */
-    @PostMapping()
+    @PostMapping("/update")
     public ApiResponse updateTask(@RequestBody Task task) {
         try {
             taskService.updateById(task);
