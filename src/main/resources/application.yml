@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:/data/potodo.db
+    url: jdbc:sqlite:/tmp/poTodoList/poTodo.db
     username:
     password:
     type: com.alibaba.druid.pool.DruidDataSource
