@@ -21,6 +21,11 @@ const app = createApp({
             describe: ''
         });
         
+        // 图表状态
+        const showChart = ref(false);
+        const chartInstance = ref(null);
+        const dailyStats = ref({});
+        
         // 检查用户是否已登录
         const checkAuth = async () => {
             const token = localStorage.getItem('token');
@@ -155,7 +160,8 @@ const app = createApp({
                 const newStatus = todo.status === 1 ? 0 : 1;
                 const response = await axios.post('/api/task/update', {
                     id: todo.id,
-                    status: newStatus
+                    status: newStatus,
+                    completedAt: Date.now()
                 });
                 
                 if (response.data.code === 200) {
@@ -217,6 +223,136 @@ const app = createApp({
             }
         };
         
+        // 获取每日完成任务统计
+        const fetchDailyStats = async () => {
+            try {
+                const userId = localStorage.getItem('userId');
+                const response = await axios.get(`/api/task/daily-stats?userId=${userId}`);
+                
+                if (response.data.code === 200) {
+                    dailyStats.value = response.data.data || {};
+                    updateChart();
+                } else {
+                    error.value = response.data.message || '获取统计数据失败';
+                }
+            } catch (err) {
+                console.error('获取统计数据错误:', err);
+                error.value = err.response?.data?.message || '获取统计数据失败，请稍后再试';
+            }
+        };
+        
+        // 初始化图表
+        const initChart = () => {
+            const canvas = document.getElementById('dailyChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // 销毁现有图表实例
+            if (chartInstance.value) {
+                chartInstance.value.destroy();
+            }
+            
+            const dates = Object.keys(dailyStats.value);
+            const counts = Object.values(dailyStats.value);
+            
+            chartInstance.value = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates.map(date => {
+                        const d = new Date(date);
+                        return `${d.getMonth() + 1}/${d.getDate()}`;
+                    }),
+                    datasets: [{
+                        label: '完成任务数',
+                        data: counts,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#3498db',
+                        pointBorderColor: '#2980b9',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#3498db',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                color: '#666'
+                            },
+                            title: {
+                                display: true,
+                                text: '完成任务数量',
+                                color: '#333'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '日期',
+                                color: '#333'
+                            },
+                            ticks: {
+                                color: '#666'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            hoverBorderWidth: 3
+                        }
+                    }
+                }
+            });
+        };
+        
+        // 更新图表
+        const updateChart = () => {
+            if (showChart.value) {
+                // 使用 nextTick 确保 DOM 已更新
+                Vue.nextTick(() => {
+                    initChart();
+                });
+            }
+        };
+        
+        // 监听图表显示状态变化
+        Vue.watch(showChart, (newValue) => {
+            if (newValue) {
+                fetchDailyStats();
+            }
+        });
+        
         // 设置axios默认配置
         axios.defaults.baseURL = '';
         axios.interceptors.request.use(config => {
@@ -250,7 +386,14 @@ const app = createApp({
             addTodo,
             toggleComplete,
             toggleStar,
-            deleteTodo
+            deleteTodo,
+            
+            // 图表相关
+            showChart,
+            dailyStats,
+            fetchDailyStats,
+            initChart,
+            updateChart
         };
     }
 });

@@ -1,25 +1,36 @@
 server:
   port: 8081
 
-
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:./data/potodo.db
-    username: 
-    password: 
+    username:
+    password:
     type: com.alibaba.druid.pool.DruidDataSource
+
+    # 连接池基本配置
     initialSize: 1
     minIdle: 1
     maxActive: 5
     maxWait: 60000
+
+    # 连接池监控配置
     timeBetweenEvictionRunsMillis: 60000
     minEvictableIdleTimeMillis: 300000
+
+    # SQLite 专用配置
     validationQuery: SELECT 1
     testWhileIdle: true
     testOnBorrow: false
     testOnReturn: false
     poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20  # 启用 PS 缓存时必须设置
+
+    # 过滤器配置
+    filters: stat,wall  # 启用监控和防火墙
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000  # 慢 SQL 记录
+
   mvc:
     view:
       suffix: .html
@@ -30,3 +41,6 @@ mybatis:
   type-handlers-package: cn.todolist.po.config
   configuration:
     map-underscore-to-camel-case: true
+    # 其他 MyBatis 配置
+    cache-enabled: true  # 启用二级缓存
+    lazy-loading-enabled: true  # 启用懒加载

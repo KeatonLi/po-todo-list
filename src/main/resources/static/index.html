@@ -6,6 +6,7 @@
     <title>Todo List</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -109,11 +110,13 @@
         
         .form-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
+            max-width: 400px;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
             font-size: 16px;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .form-group input:focus {
@@ -275,6 +278,78 @@
             padding: 20px;
             color: #6c757d;
         }
+        
+        .todo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .todo-header h2 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chart-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .chart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            height: 400px;
+            position: relative;
+        }
+        
+        .chart-container canvas {
+            max-height: 350px !important;
+            width: 100% !important;
+        }
+
+        .chart-container h3 {
+             color: #2c3e50;
+             margin: 0 0 20px 0;
+             text-align: center;
+         }
+
+         .logout-btn {
+             background: linear-gradient(135deg, #e74c3c, #c0392b);
+             color: white;
+             border: none;
+             padding: 10px 20px;
+             border-radius: 25px;
+             cursor: pointer;
+             font-size: 14px;
+             transition: all 0.3s ease;
+         }
+
+         .logout-btn:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+         }
     </style>
 </head>
 <body>
@@ -282,7 +357,6 @@
         <div class="container">
             <div class="header">
                 <h1>📝 Todo List</h1>
-                <button v-if="isLoggedIn" @click="logout" class="logout-btn">退出登录</button>
             </div>
             
             <div class="content">
@@ -337,6 +411,21 @@
                 
                 <!-- Todo列表页面 -->
                 <div v-if="isLoggedIn" class="todo-container">
+                    <div class="todo-header">
+                        <h2>我的待办事项</h2>
+                        <div class="header-actions">
+                            <button @click="showChart = !showChart" class="chart-btn">
+                                {{ showChart ? '隐藏图表' : '显示图表' }}
+                            </button>
+                            <button @click="logout" class="logout-btn">退出登录</button>
+                        </div>
+                    </div>
+
+                    <!-- 图表容器 -->
+                    <div v-if="showChart" class="chart-container">
+                        <h3>每日完成任务统计</h3>
+                        <canvas id="dailyChart" width="400" height="200"></canvas>
+                    </div>
                     <div class="todo-input">
                         <input 
                             type="text" 

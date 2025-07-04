@@ -37,4 +37,13 @@ public class Task {
     @TableField(value = "status")
     Integer status;
 
+    @TableField(value = "completed_at")
+    Long completedAt;
+
+    @TableField(value = "create_at", fill = FieldFill.INSERT)
+    Long createAt;
+
+    @TableField(value = "update_at", fill = FieldFill.INSERT_UPDATE)
+    Long updateAt;
+
 }

@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `todo_task` (
   `describe` TEXT,
   `star` INTEGER NOT NULL DEFAULT 0, -- 0：未标星，1：标星
   `status` INTEGER NOT NULL, -- 0：未完成，1：完成
+  `completed_at` TEXT, -- 任务完成时间
   `create_at` TEXT DEFAULT (datetime('now')),
   `update_at` TEXT DEFAULT (datetime('now'))
 );

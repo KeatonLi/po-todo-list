@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * 任务控制器
@@ -102,6 +103,22 @@ public class TaskController {
         try {
             taskService.updateById(task);
             return ApiResponse.ok();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ApiResponse.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 获取每日完成任务统计
+     * @param userId 用户ID
+     * @return 每日完成任务统计的API响应
+     */
+    @GetMapping("/daily-stats")
+    public ApiResponse getDailyStats(@RequestParam("userId") Long userId) {
+        try {
+            Map<String, Integer> dailyStats = taskService.getDailyCompletedStats(userId);
+            return ApiResponse.ok(dailyStats);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResponse.error(e.getMessage());
