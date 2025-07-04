@@ -10,6 +10,7 @@ import cn.todolist.po.service.UserService;
 import cn.todolist.po.utils.JwtUtil;
 import cn.todolist.po.utils.MD5Utils;
 import cn.todolist.po.utils.SnowFlakeUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -45,9 +46,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             throw new CommonException(RespStatusEnum.EMPTY_INPUT);
         }
-        User user = super.lambdaQuery().eq(User::getUsername, username)
-                .eq(User::getPassword, MD5Utils.string2MD5(password))
-                .one();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username)
+                .eq("password", MD5Utils.string2MD5(password));
+        User user = super.getOne(queryWrapper);
         if (user == null) {
             throw new CommonException(RespStatusEnum.WRONG_PASSWORD);
         }
@@ -64,7 +66,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public void userRegister(User user) {
-        Long count = super.lambdaQuery().eq(User::getUsername, user.getUsername()).count();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", user.getUsername());
+        Long count = super.count(queryWrapper);
         if (count > 0) {
             throw new CommonException(RespStatusEnum.ERROR_500.getCode(), "用户名已存在");
         } else {
