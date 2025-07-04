@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - Todo List</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 120%;
+            max-width: 1200px;
+            min-height: 800px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: 25px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+        }
+        
+        .auth-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .error {
+            color: #dc3545;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 10px;
+        }
+        
+        .success {
+            color: #155724;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            background: #d4edda;
+            border-radius: 10px;
+        }
+        
+        .footer-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .footer-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="header">
+                <h1>📝 Po-to-do List</h1>
+                <p>高效管理您的待办事项</p>
+            </div>
+            
+            <div class="content">
+                <div class="auth-tabs">
+                    <button 
+                        class="auth-tab" 
+                        :class="{active: authMode === 'login'}"
+                        @click="authMode = 'login'"
+                    >
+                        登录
+                    </button>
+                    <button 
+                        class="auth-tab" 
+                        :class="{active: authMode === 'register'}"
+                        @click="authMode = 'register'"
+                    >
+                        注册
+                    </button>
+                </div>
+                
+                <form @submit.prevent="authMode === 'login' ? login() : register()">
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input 
+                            type="text" 
+                            v-model="authForm.username" 
+                            placeholder="请输入用户名"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input 
+                            type="password" 
+                            v-model="authForm.password" 
+                            placeholder="请输入密码"
+                            required
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn" :disabled="loading">
+                        {{ loading ? '处理中...' : (authMode === 'login' ? '登录' : '注册') }}
+                    </button>
+                </form>
+                
+                <div v-if="error" class="error">{{ error }}</div>
+                <div v-if="success" class="success">{{ success }}</div>
+                
+                <div class="footer-link">
+                    <a href="#" @click.prevent="authMode = authMode === 'login' ? 'register' : 'login'">
+                        {{ authMode === 'login' ? '还没有账号？立即注册' : '已有账号？立即登录' }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="login.js"></script>
+</body>
+</html>
