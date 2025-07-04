@@ -8,28 +8,30 @@ spring:
     username:
     password:
     type: com.alibaba.druid.pool.DruidDataSource
-
-    # 连接池基本配置
-    initialSize: 1
-    minIdle: 1
-    maxActive: 5
-    maxWait: 60000
-
-    # 连接池监控配置
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-
-    # SQLite 专用配置
-    validationQuery: SELECT 1
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20  # 启用 PS 缓存时必须设置
-
-    # 过滤器配置
-    filters: stat,wall  # 启用监控和防火墙
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000  # 慢 SQL 记录
+    
+    # Druid 连接池配置
+    druid:
+      # 连接池基本配置
+      initial-size: 1
+      min-idle: 1
+      max-active: 5
+      max-wait: 60000
+      
+      # 连接池监控配置
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      
+      # SQLite 专用配置
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      
+      # 过滤器配置
+      filters: stat,wall
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 
   mvc:
     view:
